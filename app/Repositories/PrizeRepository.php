@@ -32,4 +32,17 @@ class PrizeRepository
             ->pluck('name', 'id')
             ->toArray();
     }
+
+    public function findNotSendMoneyPrizes($userId, $lotteryId)
+    {
+        return Prize
+            ::where('lottery_id', $lotteryId)
+            ->where('user_id', $userId)
+            ->whereHas('prizeType', function($prizeType) {
+                $prizeType->where('name','money');
+            })
+            ->whereNull('sent_at')
+            ->where('is_rejected',false)
+            ->get();
+    }
 }
