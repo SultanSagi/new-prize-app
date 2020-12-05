@@ -26,3 +26,5 @@ Route::delete('prizes/{prize}', 'PrizesController@destroy');
 Route::get('lotteries', 'LotteriesController@index');
 
 Route::post('user-account', 'UserAccountController@store');
+
+Route::post('money-to-points', 'UserAccountController@convertMoneyToPoints');

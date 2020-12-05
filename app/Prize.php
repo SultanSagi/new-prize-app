@@ -13,6 +13,7 @@ class Prize extends Model
     protected $casts = [
         'is_rejected' => 'bool',
         'sent_at' => 'datetime',
+        'converted_at' => 'datetime',
         'prize_amount' => 'int',
     ];
 

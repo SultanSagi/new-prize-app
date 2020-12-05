@@ -89,4 +89,30 @@ class PrizeTest extends TestCase
 
         $this->assertSame($prize->prize_amount, $user->fresh()->bank_account_amount);
     }
+
+    /** @test */
+    public function money_prize_can_be_converted_to_points()
+    {
+        $this->withoutExceptionHandling();
+
+        $lottery = factory(Lottery::class)->state('active')->create();
+        $user = factory(User::class)->create();
+
+        $prize = factory(Prize::class)->state('money')->create([
+            'lottery_id' => $lottery,
+            'user_id' => $user,
+        ]);
+
+        $data = [
+            'prize_id' => $prize->id,
+        ];
+
+        $this->assertSame(0, $user->points);
+
+        $this
+            ->actingAs($user)
+            ->post('money-to-points', $data);
+
+        $this->assertSame((int)($prize->prize_amount * $lottery->rate), $user->fresh()->points);
+    }
 }

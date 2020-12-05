@@ -3,7 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\User;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
+use App\Prize;
 use Faker\Generator as Faker;
 
 /*
@@ -17,7 +17,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(\App\Prize::class, function (Faker $faker) {
+$factory->define(Prize::class, function (Faker $faker) {
     $prizeType = factory(\App\PrizeType::class)->create([
         'name' => 'bonuses'
     ]);
@@ -31,7 +31,7 @@ $factory->define(\App\Prize::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(\App\Lottery::class, 'money', function () {
+$factory->state(Prize::class, 'money', function () {
     $prizeType = factory(\App\PrizeType::class)->create([
         'name' => 'money'
     ]);
@@ -40,7 +40,7 @@ $factory->state(\App\Lottery::class, 'money', function () {
     ];
 });
 
-$factory->state(\App\Lottery::class, 'product', function () {
+$factory->state(Prize::class, 'product', function () {
     $prizeType = factory(\App\PrizeType::class)->create([
         'name' => 'product'
     ]);

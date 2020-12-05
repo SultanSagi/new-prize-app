@@ -9,6 +9,7 @@ use App\PrizeItem;
 use App\PrizeType;
 use App\Repositories\LotteryRepository;
 use App\Repositories\PrizeRepository;
+use App\User;
 
 class PrizeService
 {
@@ -123,6 +124,31 @@ class PrizeService
         }
 
         $prize->reject();
+
+        $response['status'] = 'success';
+        $response['message'] = 'Prize was successfully rejected!';
+        return $response;
+    }
+
+    public function convertMoneyToPoints($userId, $prizeId)
+    {
+        $response = [];
+
+        $prize = Prize::find($prizeId);
+
+        $user = User::find($userId);
+
+        if(!$prize || $prize->prizeType->name !== 'money'){
+            $response['status'] = 'error';
+            $response['message'] = 'Prize can\'t be converted!';
+            return $response;
+        }
+
+        $convertedPoints = (int)$prize->prize_amount*$this->currentLottery->rate;
+//        dd($this->currentLottery->rate);
+        $user->update([
+            'points' => $user->points + $convertedPoints
+        ]);
 
         $response['status'] = 'success';
         $response['message'] = 'Prize was successfully rejected!';

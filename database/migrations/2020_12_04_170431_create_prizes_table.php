@@ -22,6 +22,7 @@ class CreatePrizesTable extends Migration
             $table->unsignedInteger('prize_amount')->nullable();
             $table->boolean('is_rejected')->default(false);
             $table->timestamp('sent_at')->nullable();
+            $table->timestamp('converted_at')->nullable();
             $table->timestamps();
         });
     }

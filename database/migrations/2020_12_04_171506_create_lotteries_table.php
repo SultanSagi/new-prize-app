@@ -19,6 +19,7 @@ class CreateLotteriesTable extends Migration
             $table->timestamp('finished_at')->nullable();
             $table->boolean('status')->default(false);
             $table->unsignedInteger('total_sum')->nullable();
+            $table->decimal('rate','10','2')->default(1);
             $table->timestamps();
         });
     }

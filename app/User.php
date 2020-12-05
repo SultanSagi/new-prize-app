@@ -20,6 +20,7 @@ class User extends Authenticatable
         'email',
         'password',
         'bank_account_amount',
+        'points',
     ];
 
     /**
@@ -39,6 +40,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'bank_account_amount' => 'int',
+        'points' => 'int',
     ];
 
     public function prizes()

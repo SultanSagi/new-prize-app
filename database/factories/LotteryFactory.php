@@ -22,7 +22,8 @@ $factory->define(\App\Lottery::class, function (Faker $faker) {
         'started_at' => Carbon::now(),
         'finished_at' => Carbon::now(),
         'status' => false,
-        'total_sum' => $faker->numberBetween(1,1000)
+        'total_sum' => $faker->numberBetween(1,1000),
+        'rate' => $faker->numberBetween(1,100),
     ];
 });
 
