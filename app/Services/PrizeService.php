@@ -9,13 +9,10 @@ use App\PrizeItem;
 use App\PrizeType;
 use App\Repositories\LotteryRepository;
 use App\Repositories\PrizeRepository;
-use Illuminate\Support\Facades\Auth;
 
 class PrizeService
 {
     private $prizeRepository;
-
-    private $prizeTypeRepository;
 
     private $currentLottery;
 
@@ -69,32 +66,31 @@ class PrizeService
 
         $prizeType = PrizeType::where('name', $this->prizeTypeArray[$prizeKey])->first();
 
+        if(!$prizeType) {
+            throw new \Exception("Prize type not found!");
+        }
+
         $prizeSum = null;
         $prizeItem = null;
 
-        switch ($this->prizeTypeArray[$prizeKey]){
-            case 'bonuses':
-                $min = 0;
-                $max = 1000;
-                $prizeSum = $this->getRandomAmount($min, $max);
-                break;
-            case 'money':
-                $min = 0;
-                $max = 1000;
-                $prizeSum = $this->getRandomAmount($min, $max);
-                break;
-            case 'product':
-                $prizeItem = $this->getRandomProducts();
-                break;
+        if($this->prizeTypeArray[$prizeKey] === 'product') {
+            $prizeItem = $this->getRandomProducts();
+        }
+        else {
+            $min = 0;
+            $max = 1000;
+            $prizeSum = $this->getRandomAmount($min, $max);
         }
 
-        $prize = Prize::create([
+        $attributes = [
             'user_id' => $userId,
             'lottery_id' => $this->currentLottery->id,
-            'prize_type_id' => $prizeType ? $prizeType->id : 1,
+            'prize_type_id' => $prizeType->id,
             'prize_amount' => $prizeSum,
             'prize_item_id' => $prizeItem ? $prizeItem->id: null
-        ]);
+        ];
+
+        $prize = $this->prizeRepository->create($attributes);
 
         return $prize->toArray();
     }

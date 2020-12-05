@@ -45,4 +45,9 @@ class PrizeRepository
             ->where('is_rejected',false)
             ->get();
     }
+
+    public function create($attributes)
+    {
+        return Prize::create($attributes);
+    }
 }

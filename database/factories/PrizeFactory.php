@@ -18,16 +18,35 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(\App\Prize::class, function (Faker $faker) {
-    $prizeTypes = ['bonuses','money','product'];
     $prizeType = factory(\App\PrizeType::class)->create([
-        'name' => $faker->randomElement($prizeTypes)
+        'name' => 'bonuses'
     ]);
     return [
         'lottery_id' => factory(\App\Lottery::class),
         'user_id' => factory(User::class),
         'prize_type_id' => $prizeType,
-        'prize_item_id' => factory(\App\PrizeItem::class),
+        'prize_item_id' => null,
         'prize_amount' => $faker->numberBetween(1,1000),
         'is_rejected' => false
+    ];
+});
+
+$factory->state(\App\Lottery::class, 'money', function () {
+    $prizeType = factory(\App\PrizeType::class)->create([
+        'name' => 'money'
+    ]);
+    return [
+        'prize_type_id' => $prizeType,
+    ];
+});
+
+$factory->state(\App\Lottery::class, 'product', function () {
+    $prizeType = factory(\App\PrizeType::class)->create([
+        'name' => 'product'
+    ]);
+    return [
+        'prize_type_id' => $prizeType,
+        'prize_amount' => null,
+        'prize_item_id' => factory(\App\PrizeItem::class),
     ];
 });
