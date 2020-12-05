@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Lottery;
 use App\Prize;
+use App\PrizeType;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,17 +25,9 @@ class PrizeTest extends TestCase
             'lottery_id' => $lottery
         ]);
 
-        $response = $this
+        $this
             ->actingAs($user)
-            ->post('prizes')
-            ->assertOk();
-
-        $response = $response->decodeResponseJson();
-
-        $prize = Prize::latest('id')->first();
-
-        $this->assertEquals($prize->prizeType->name, $response['type']);
-        $this->assertEquals($prize->prize_amount, $response['sum']);
+            ->get('prizes');
 
         $this->assertCount(1, $user->prizes);
     }
@@ -53,7 +46,7 @@ class PrizeTest extends TestCase
 
         $this
             ->actingAs($user)
-            ->post('prizes');
+            ->get('prizes');
 
         $prize = $user->fresh()->prizes->first();
 
@@ -64,5 +57,36 @@ class PrizeTest extends TestCase
         $prize = $prize->fresh();
 
         $this->assertTrue($prize->is_rejected);
+    }
+
+    /** @test */
+    public function money_prize_can_be_transferred_to_user_account()
+    {
+        $this->withoutExceptionHandling();
+
+        $lottery = factory(Lottery::class)->state('active')->create();
+        $user = factory(User::class)->create();
+
+        $prizeType = factory(PrizeType::class)->create([
+            'name' => 'money'
+        ]);
+
+        $prize = factory(Prize::class)->create([
+            'lottery_id' => $lottery,
+            'user_id' => $user,
+            'prize_type_id' => $prizeType
+        ]);
+
+        $data = [
+            'prize_id' => $prize->id,
+        ];
+
+        $this->assertSame(0, $user->bank_account_amount);
+
+        $this
+            ->actingAs($user)
+            ->post('user-account', $data);
+
+        $this->assertSame($prize->prize_amount, $user->fresh()->bank_account_amount);
     }
 }

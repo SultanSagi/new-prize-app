@@ -14,10 +14,9 @@
                         </div>
                     @endif
 
-                        <form method="POST" action="/prizes" class="mr-1">
-                            @csrf
-                            <button class="btn btn-success">Generate random prize</button>
-                        </form>
+                        <div class="form-group">
+                            <a href="/prizes" class="btn btn-success">Generate random prize</a>
+                        </div>
                     <br>
 
                     <br>
@@ -28,16 +27,24 @@
                             <li>{{$prize['sum']}}</li>
                             <li>{{$prize['product']}}</li>
                         </ul>
-                        {{--<span>{{$prize->title}}</span>--}}
-                        <form method="POST" action="/prizes/{{$prize['id']}}" class="mr-1">
+                        <form method="POST" action="/prizes/{{$prize['id']}}" class="mr-1 form-group">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger">Reject the prize</button>
                         </form>
 
-                            <a href="" class="btn btn-primary">Зачислить баллы</a>
-                            <a href="" class="btn btn-primary">Конвертировать в баллы</a>
-                            <a href="" class="btn btn-primary">Перевести в банк</a>
+                            <div class="form-group">
+                                <a href="" class="btn btn-primary mr-1">Convert to the points</a>
+                            </div>
+                            @if($prize['title'] === 'Money')
+                                <div class="form-group">
+                                    <form method="POST" action="/user-account" class="mr-1">
+                                        @csrf
+                                        <input type="hidden" name="prize_id" value="{{$prize['id']}}">
+                                        <button class="btn btn-primary">Deposit to the bank account</button>
+                                    </form>
+                                </div>
+                            @endif
                     @endif
                 </div>
             </div>

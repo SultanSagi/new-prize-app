@@ -19,27 +19,10 @@ class PrizesController extends Controller
         $this->prizeService = $prizeService;
     }
 
-    public function store()
+    public function show()
     {
         $prize = $this->prizeService->getPrize(auth()->id());
 
-//        $prizes = ['money', 'bonus points', 'object'];
-//
-//        $prizeTypeIndex = array_rand($prizes);
-//
-//        if ($prizes[$prizeTypeIndex] === "object") {
-//            $objects = ['Table', 'ball', 'car', 'laptop', 'phone'];
-//            $objectIndex = array_rand($objects);
-//            $prize = $objects[$objectIndex];
-//            $prizeSentence = $prize;
-//        }
-//        else {
-//            $prize = rand(1, 1000);
-//            $prizeSentence = "$prize $prizes[$prizeTypeIndex]";
-//        }
-//
-//        return redirect('/home')
-//            ->with('success', "Congrats! You won");
         return view('home')
             ->with('success', "Congrats! You won")
             ->with('prize', $prize);
