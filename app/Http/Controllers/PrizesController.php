@@ -21,7 +21,7 @@ class PrizesController extends Controller
 
     public function store()
     {
-        return response()->json($this->prizeService->getPrize(auth()->id()));
+        $prize = $this->prizeService->getPrize(auth()->id());
 
 //        $prizes = ['money', 'bonus points', 'object'];
 //
@@ -39,7 +39,10 @@ class PrizesController extends Controller
 //        }
 //
 //        return redirect('/home')
-//            ->with('success', "Congrats! You won - {$prizeSentence}");
+//            ->with('success', "Congrats! You won");
+        return view('home')
+            ->with('success', "Congrats! You won")
+            ->with('prize', $prize);
     }
 
     public function destroy(Prize $prize)

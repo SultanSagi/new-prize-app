@@ -88,14 +88,12 @@ class PrizeService
                 break;
         }
 
-//        dd($prizeType);
-
         $prize = Prize::create([
             'user_id' => $userId,
             'lottery_id' => $this->currentLottery->id,
             'prize_type_id' => $prizeType ? $prizeType->id : 1,
             'prize_amount' => $prizeSum,
-            'prize_item_id' => $prizeItem
+            'prize_item_id' => $prizeItem ? $prizeItem->id: null
         ]);
 
         return $prize->toArray();
@@ -109,7 +107,7 @@ class PrizeService
     private function getRandomProducts():PrizeItem
     {
         $index = array_rand($this->availableProducts);
-        return $this->availableProducts[$index];
+        return PrizeItem::where('name', $this->availableProducts[$index])->first();
     }
 
     public function rejectPrize(int $id):array

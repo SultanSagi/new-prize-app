@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 
-use App\Lottery;
 use App\Prize;
 use App\PrizeItem;
 
@@ -17,14 +16,8 @@ class PrizeRepository
             ->whereNotNull('user_id')
             ->first();
 
-         if(!$prize) {
-             throw new \Exception("Prize not exist!");
-         }
 
-        $prizeAmount = $prize->prize_amount;
-
-
-        return $prizeAmount;
+        return $prize ? $prize->prize_amount : 0;
     }
 
     public function findAvailableProductsByLottery(int $id)
@@ -36,7 +29,7 @@ class PrizeRepository
 
         return PrizeItem::where('lottery_id', $id)
             ->whereNotIn('id', $prizes)
-            ->select('id', 'name', 'lottery_id')
-            ->get();
+            ->pluck('name', 'id')
+            ->toArray();
     }
 }
