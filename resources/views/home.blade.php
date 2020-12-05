@@ -33,15 +33,19 @@
                             <button class="btn btn-danger">Reject the prize</button>
                         </form>
 
-                            <div class="form-group">
-                                <a href="" class="btn btn-primary mr-1">Convert to the points</a>
-                            </div>
                             @if($prize['title'] === 'Money')
                                 <div class="form-group">
                                     <form method="POST" action="/user-account" class="mr-1">
                                         @csrf
                                         <input type="hidden" name="prize_id" value="{{$prize['id']}}">
                                         <button class="btn btn-primary">Deposit to the bank account</button>
+                                    </form>
+                                </div>
+                                <div class="form-group">
+                                    <form method="POST" action="/money-to-points" class="mr-1">
+                                        @csrf
+                                        <input type="hidden" name="prize_id" value="{{$prize['id']}}">
+                                        <button class="btn btn-primary">Convert to the points</button>
                                     </form>
                                 </div>
                             @endif
