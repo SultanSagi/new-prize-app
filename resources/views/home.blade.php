@@ -18,6 +18,13 @@
                             @csrf
                             <button class="btn btn-success">Generate random prize</button>
                         </form>
+                    <br>
+
+                        <form method="POST" action="/prizes/11" class="mr-1">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger">Reject the prize</button>
+                        </form>
                 </div>
             </div>
         </div>

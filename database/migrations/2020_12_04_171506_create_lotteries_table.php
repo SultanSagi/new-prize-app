@@ -16,7 +16,7 @@ class CreateLotteriesTable extends Migration
         Schema::create('lotteries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamp('started_at');
-            $table->timestamp('finished_at');
+            $table->timestamp('finished_at')->nullable();
             $table->boolean('status')->default(false);
             $table->unsignedInteger('total_sum')->nullable();
             $table->timestamps();

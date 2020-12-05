@@ -1,7 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\User;
+use App\Lottery;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
@@ -23,5 +23,17 @@ $factory->define(\App\Lottery::class, function (Faker $faker) {
         'finished_at' => Carbon::now(),
         'status' => false,
         'total_sum' => $faker->numberBetween(1,1000)
+    ];
+});
+
+$factory->state(\App\Lottery::class, 'active', function () {
+    return [
+        'status' => true
+    ];
+});
+
+$factory->state(\App\Lottery::class, 'inactive', function () {
+    return [
+        'status' => false
     ];
 });

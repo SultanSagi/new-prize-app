@@ -20,3 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('prizes', 'PrizesController@store');
+
+Route::delete('prizes/{prize}', 'PrizesController@destroy');
+
+Route::get('lotteries', 'LotteriesController@index');

@@ -20,6 +20,7 @@ class CreatePrizesTable extends Migration
             $table->unsignedBigInteger('prize_type_id');
             $table->unsignedBigInteger('prize_item_id')->nullable();
             $table->unsignedInteger('prize_amount')->nullable();
+            $table->boolean('is_rejected')->default(false);
             $table->timestamps();
         });
     }

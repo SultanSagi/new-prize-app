@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function prizes()
+    {
+        return $this->hasMany(Prize::class)->where('is_rejected', false);
+    }
 }
